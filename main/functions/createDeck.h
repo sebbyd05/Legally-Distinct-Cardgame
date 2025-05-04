@@ -1,6 +1,5 @@
 /*
-Header file that defines the essential functions the game needs in order to run.
-
+Header file that creates things nessicary for the creation of the game deck and player deck
 */
 
 #include<stdio.h>
