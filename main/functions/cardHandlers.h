@@ -60,3 +60,43 @@ int drawCard(card deck[], player p) {
     //Return 0 to indicate that the function funished running properly
     return 0;
 }
+
+//Function that checks if a player has the nessicary cards to not need to draw 4 from an OR card. Returns true if the player has the card needed.
+bool checkOR(player targeted, card lastPlayed) {
+    //Go one by one till a valid card is found
+    for(int i = 0; targeted.deck[i].name != NULL; i++) {
+        if(targeted.deck[i].name == lastPlayed.name) {
+            return true;
+        } else if(targeted.deck[i].color == lastPlayed.color) {
+            return true;
+        }
+    }
+
+    //If none of those pass by the time the null cards are reached in the player's deck say that it couldn't find a valid card
+    return false;
+}
+
+//Function that checks if a player has the nessicary cards to not need to draw 4 from an OR card. Returns true if the player has the card needed.
+bool checkAND(player targeted, card lastPlayed) {
+    //Go one by one till a valid card is found
+    for(int i = 0; targeted.deck[i].name != NULL; i++) {
+        if(targeted.deck[i].name == lastPlayed.name && targeted.deck[i].color == lastPlayed.color) {
+            return true;
+        }
+    }
+
+    //If none of those pass by the time the null cards are reached in the player's deck say that it couldn't find a valid card
+    return false;
+}
+
+//Function that handles the reverse card
+void handleReverse(bool *gameReversed, int *currentPlayer, int playerCount) {
+    if(playerCount == 2) {
+        *currentPlayer = *currentPlayer - 1;
+    } else {
+        *gameReversed = true;
+    }
+    
+    return;
+}
+
