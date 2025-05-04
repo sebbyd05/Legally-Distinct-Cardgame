@@ -45,4 +45,11 @@ int main() {
             }
         }
     }
+
+    //Now that the players have been initalized, create the deck for the game.
+    card deck[DECK_SIZE];
+    createDeck(deck);
+    shuffleDeck(deck);
+
+    return 0;
 }
