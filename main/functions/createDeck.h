@@ -82,14 +82,3 @@ void createDeck(card deck[100]) {
 
     return;
 }
-
-//DEBUG ONLY
-int main() {
-    card deck[100];
-
-    createDeck(deck);
-
-    printf("Break now lol");
-
-    return 0;
-}
