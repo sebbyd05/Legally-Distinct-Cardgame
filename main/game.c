@@ -1,3 +1,4 @@
 #include<stdio.h>
 #include<string.h>
-#include"gameTypes.h"
+#include"definitions/gameTypes.h"
+#include"functions\createDeck.h"
