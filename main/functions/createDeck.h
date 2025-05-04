@@ -5,9 +5,10 @@ Header file that defines the essential functions the game needs in order to run.
 
 #include<stdio.h>
 #include"../definitions/gameTypes.h"
+#include"../definitions/gameRules.h"
 
 //Function that creates a full deck of 100 cards
-void createDeck(card deck[100]) {
+void createDeck(card deck[DECK_SIZE]) {
     //Position for card being created sense using for loops for aspects
     int deckPos = 0;
     //Begin with a loop that goes through each card color to do the numbered cards: 0 - R, 1 - Y, 2 - G, 3 - B
