@@ -28,10 +28,9 @@ int main() {
 
     
     //Initalize the players, ask for their names.
-    
     //Eat the \n from the last line to ensure it runs properly.
     getchar();
-    
+    //Get a name for each of the players
     for(int i = 0; i < numPlayers; i++) {
         //Loop to continue to ask for a name if none is input.
         while(1 == 1) {
@@ -46,7 +45,7 @@ int main() {
         }
     }
 
-    //Now that the players have been initalized, create the deck for the game.
+    //Now that the players have been initalized, create the deck for the game, perform required operations to the game deck.
     card deck[DECK_SIZE];
     createDeck(deck);
     shuffleDeck(deck);
@@ -100,6 +99,7 @@ int main() {
         
         //Begin a loop for the player to pick a card within
         while(1 == 1){ 
+            //Create a variable for the choice the player will make.
             int cardChoice = -2;
             //Prompt the current player for their choice for next card
             printf("\n%s, enter which card to play from 0 to %d. Enter -1 to draw a card: ", players[playerTurn].playerName, (players[playerTurn].decksize -1));
@@ -111,6 +111,7 @@ int main() {
                 }
                 break;
             } else if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
+                //Check if the played card is valid, procede and break the loop if it is.
                 if(checkCardValid(topCard, players[playerTurn].deck[cardChoice], &andCondition)) {
                     //Set the previous top card to be the current top card so we can change it out (for NOT or Reverse)
                     oldTopCard = topCard;
@@ -121,6 +122,7 @@ int main() {
                     //Exit the while loop
                     break;
                 } else {
+                    //Notify the player if they can't play their chosen card.
                     printf("\nInvalid choice, cannot place ");
                     printCard(players[playerTurn].deck[cardChoice], false);
                     printf(" on ");
