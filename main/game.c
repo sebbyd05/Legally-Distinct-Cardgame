@@ -101,7 +101,9 @@ int main() {
             scanf("%d", &cardChoice);
             //Check if the card played is valid or not, or see if they want to pick a card.
             if(cardChoice == -1) {
-                drawCard(deck, &players[playerTurn]);
+                if(drawCard(deck, &players[playerTurn]) == 1) {
+                    outOfCards = true;
+                }
                 break;
             } else if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
                 if(checkCardValid(topCard, players[playerTurn].deck[cardChoice])) {
@@ -168,7 +170,9 @@ int main() {
                     printf("or %c\n OR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
-                        drawCard(deck, &players[playerNext]);
+                        if(drawCard(deck, &players[playerNext]) == 1) {
+                            outOfCards = true;
+                        }
                     }
                 }
                 //Just continue if the player does satisfy the requirements.
@@ -205,7 +209,9 @@ int main() {
                     printf("and %c\n AND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
-                        drawCard(deck, &players[playerNext]);
+                        if(drawCard(deck, &players[playerNext]) == 1) {
+                            outOfCards = true;
+                        }
                     }
                 }
                 //Just continue if the player does satisfy the requirements.
@@ -279,6 +285,28 @@ int main() {
             //Set the repeat player flag to false and do nothing.
             repeatPlayer = false;
         }
+        
+        //If the deck is out of cards, end the game and declare a winner.
+        if(outOfCards) {
+            //Create a variable that stores whichever player in the players array has the least cards
+            int leastCards = 0;
+            //Search through the players to see which has the least amount of cards
+            for(int i = 0; i < numPlayers; i++) {
+                if(players[i].decksize < players[leastCards].decksize) {
+                    leastCards = i;
+                }
+            }
+
+            //Now that we know who has the least amount of cards, announce that the game is over.
+            printf("\n\nThe deck has ran out of cards! The game is over!\n");
+            printf("%s wins, as they only had %d cards left!", players[leastCards].playerName, players[leastCards].decksize);
+
+            //Set continue game to false, and break out of the loop.
+            continueGame = false;
+            break;
+        }
+        
+
     } //Continue game loop end
     
     return 0;
