@@ -58,5 +58,60 @@ int main() {
         }
     }
 
+    //Create a boolean to tell the game if it should continue.
+    bool continueGame = true;
+    while(continueGame == true) {
+        //Print the available cards for the players.
+        for(int p = 0; p < numPlayers; p++) {
+            //Print the name of the player who's deck we are about to see.
+            printf("\n%s's hand:\n", players[p].playerName);
+            //Print each available card
+            for(int c = 0; c < players[p].decksize; c++) {
+                printf("\n[%d] ", c);
+                switch(players[p].deck[c].color) {
+                    case 'R':
+                        printf("Red %c", players[p].deck[c].name);
+                        break;
+                    
+                    case 'G':
+                        printf("Green %c", players[p].deck[c].name);
+                        break;
+
+                    case 'B':
+                        printf("Blue %c", players[p].deck[c].name);
+                        break;
+
+                    case 'Y':
+                        printf("Yellow %c", players[p].deck[c].name);
+                        break;
+
+                    case 'S':
+                        switch(players[p].deck[c].name) {
+                            case 'A':
+                                printf("And");
+                                break;
+
+                            case 'O':
+                                printf("Or");
+                                break;
+
+                            case 'N':
+                                printf("Not");
+                                break;
+
+                            case 'R':
+                                printf("Reverse");
+                                break;
+                        }
+                        break;
+                }
+            }
+            printf("\n");
+        }
+
+        //Now that the cards the player has are printed, determine what user's turn it is and ask them for a move
+
+    }
+    
     return 0;
 }
