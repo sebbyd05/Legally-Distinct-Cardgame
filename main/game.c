@@ -121,6 +121,11 @@ int main() {
             }
         }
         
+        //Check if the player has won, announce and break if they have.
+        if(players[playerTurn].decksize < 1) {
+            printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+        }
+
         //Add some clauses to handle the special cards, only checks color first to save compute.
         if(topCard.color == 'S') {
             //Follow a branch based on which special card is played.
@@ -142,6 +147,12 @@ int main() {
                         printf("\nThat is not a valid selection, please try again!\n");
                     }
                 }
+
+                //Check if the player won by playing that card
+                if(players[playerTurn].decksize < 1) {
+                    printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                }
+                
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
                 if(!checkOR(players[playerNext], topCard)) {
                     printf("%s has no cards that match ", players[playerNext].playerName);
@@ -171,6 +182,12 @@ int main() {
                         printf("\nThat is not a valid selection, please try again!\n");
                     }
                 }
+
+                //Check if the player won by playing that card.
+                if(players[playerTurn].decksize < 1) {
+                    printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                }
+
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
                 if(!checkAND(players[playerNext], topCard)) {
                     printf("%s has no cards that match ", players[playerNext].playerName);
@@ -183,17 +200,28 @@ int main() {
                 }
                 //Just continue if the player does satisfy the requirements.
             } else if(topCard.name == 'N') {
+                //Check if the player won by playing that card before doing anything else
+                if(players[playerTurn].decksize < 1) {
+                    printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                }
                 //Revert to the previous top card as it just skips player
                 topCard = oldTopCard;
                 //Tell the system that determines what player goes next to true.
                 skipNext = true;
             } else if(topCard.name == 'R') {
+                //Check if the player won by playing that card. If this isn't done here future checking will be very messed up.
+                if(players[playerTurn].decksize < 1) {
+                    printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                }
+                //Set the card to whatever was on top before the reverse was played
+                topCard = oldTopCard;
+                //Make the reverse setting whatever it wasn't
                 reverse = !reverse;
+                //Have the handle reverse function trick the next player system so the same player goes again.
                 handleReverse(reverse, &playerTurn);
             }
         }
         
-        //Now that the cards the player has are printed, determine what user's turn it is and ask them for a move
 
     }
     
