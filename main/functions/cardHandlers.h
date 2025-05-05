@@ -11,6 +11,8 @@ bool checkCardValid(card lastPlayed, card canidate) {
         return true;
     } else if(lastPlayed.name == canidate.name) {
         return true;
+    } else if(lastPlayed.name == '\0') {
+        return true;
     }
 
     //Return false if the color or name don't match
@@ -103,3 +105,100 @@ void handleReverse(bool *gameReversed, int *currentPlayer, int playerCount) {
     return;
 }
 
+//Function that prints a card
+void printCard(card c) {
+    switch(c.color) {
+        case 'R':
+            printf("Red %c", c.name);
+            break;
+        
+        case 'G':
+            printf("Green %c", c.name);
+            break;
+
+        case 'B':
+            printf("Blue %c", c.name);
+            break;
+
+        case 'Y':
+            printf("Yellow %c", c.name);
+            break;
+
+        case 'S':
+            switch(c.name) {
+                case 'A':
+                    printf("And");
+                    break;
+
+                case 'O':
+                    printf("Or");
+                    break;
+
+                case 'N':
+                    printf("Not");
+                    break;
+
+                case 'R':
+                    printf("Reverse");
+                    break;
+            }
+            break;
+    }
+
+    return;
+}
+
+//Function that prints the player's name and hand, prints number of card in stack if the isUp bool is true.
+void printPlayerHand(player p, bool isUp) {
+    //Print the name of the player who's deck we are about to see.
+    printf("\n%s's hand:\n", p.playerName);
+    //Print each available card
+    for(int c = 0; c < p.decksize; c++) {
+        //If the player that gets to select a card is up, put the numbers next to their cards to help them choose
+        if(isUp == true) {
+            printf("\n[%d] ", c);
+        } else {
+            printf("\n");
+        }
+        //Print the card name based on atributes
+        switch(p.deck[c].color) {
+            case 'R':
+                printf("Red %c", p.deck[c].name);
+                break;
+            
+            case 'G':
+                printf("Green %c", p.deck[c].name);
+                break;
+
+            case 'B':
+                printf("Blue %c", p.deck[c].name);
+                break;
+
+            case 'Y':
+                printf("Yellow %c", p.deck[c].name);
+                break;
+
+            case 'S':
+                switch(p.deck[c].name) {
+                    case 'A':
+                        printf("And");
+                        break;
+
+                    case 'O':
+                        printf("Or");
+                        break;
+
+                    case 'N':
+                        printf("Not");
+                        break;
+
+                    case 'R':
+                        printf("Reverse");
+                        break;
+                }
+                break;
+        }
+    }
+
+    return;
+}
