@@ -76,6 +76,8 @@ int main() {
     bool outOfCards = false;
     //Boolean that makes whatever player is up go again if it is true.
     bool repeatPlayer = false;
+    //Boolean that tells the game if an AND card was played right before.
+    bool andCondition = false;
     
     //While loop to contain the main part of the game
     while(continueGame == true) {
@@ -109,7 +111,7 @@ int main() {
                 }
                 break;
             } else if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
-                if(checkCardValid(topCard, players[playerTurn].deck[cardChoice])) {
+                if(checkCardValid(topCard, players[playerTurn].deck[cardChoice], &andCondition)) {
                     //Set the previous top card to be the current top card so we can change it out (for NOT or Reverse)
                     oldTopCard = topCard;
                     //Set the top card to be the card the player just played.
@@ -123,6 +125,10 @@ int main() {
                     printCard(players[playerTurn].deck[cardChoice], false);
                     printf(" on ");
                     printCard(topCard, false);
+                    //If this round requires same suit AND color then if the player selects the wrong type of card it should be explained why that doesn't work.
+                    if(andCondition) {
+                        printf(" as the name AND color must match!");
+                    }
                     printf("\n");
                 }
             } else {
@@ -216,8 +222,10 @@ int main() {
                             outOfCards = true;
                         }
                     }
+                } else {
+                    //If the player has a card they can play, require the next played card to meet the and requirements.
+                    andCondition = true;
                 }
-                //Just continue if the player does satisfy the requirements.
             } else if(topCard.name == 'N') {
                 //Check if the player won by playing that card before doing anything else
                 if(players[playerTurn].decksize < 1) {

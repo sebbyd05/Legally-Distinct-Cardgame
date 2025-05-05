@@ -6,20 +6,28 @@ A collection of functions that determine how cards and actions work
 #include<stdbool.h> //Might be able to remove, depending on how I want to do it
 
 //Function that checks if the card can be played. Returns true if it can be, returns false if it can't.
-bool checkCardValid(card lastPlayed, card canidate) {
-    if(lastPlayed.color == canidate.color) {
-        return true;
-    } else if(lastPlayed.name == canidate.name) {
-        return true;
-    } else if(lastPlayed.name == '\0') {
-        return true;
-    } else if(lastPlayed.color == 'S') {
-        return true;
-    } else if(canidate.color == 'S') {
-        return true;
+bool checkCardValid(card lastPlayed, card canidate, bool *isAnd) {
+    if(!isAnd){
+        //If the game isn't in an AND state follow normal rules
+        if(lastPlayed.color == canidate.color) {
+            return true;
+        } else if(lastPlayed.name == canidate.name) {
+            return true;
+        } else if(lastPlayed.name == '\0') {
+            return true;
+        } else if(lastPlayed.color == 'S') {
+            return true;
+        } else if(canidate.color == 'S') {
+            return true;
+        }
+    } else {
+        //If the and condition is true, make sure the exact same card is played, and if it is set the isAnd condition to false.
+        if(lastPlayed.color == canidate.color && lastPlayed.name == canidate.name) {
+            *isAnd = false;
+            return true;
+        } 
     }
-
-    //Return false if the color or name don't match
+    //Return false if the color or name don't match (or name AND color if and is true)
     return false;
 }
 
