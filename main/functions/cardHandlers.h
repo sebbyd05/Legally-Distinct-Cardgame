@@ -15,6 +15,8 @@ bool checkCardValid(card lastPlayed, card canidate) {
         return true;
     } else if(lastPlayed.color == 'S') {
         return true;
+    } else if(canidate.color == 'S') {
+        return true;
     }
 
     //Return false if the color or name don't match
