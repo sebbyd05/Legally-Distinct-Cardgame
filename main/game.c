@@ -2,6 +2,10 @@
 
 //Main game function
 int main() {
+    while(1 == 1) { //Start an infite loop to make the game run over and over again. Not following proper formatting so that the entire body of the code doesn't have to be indented.
+    
+    
+    
     //Start by getting the number of players for the game
     int numPlayers;
     //Loop to ensure valid player number entry
@@ -169,9 +173,9 @@ int main() {
                 
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
                 if(!checkOR(players[playerNext], topCard)) {
-                    printf("%s has no cards that match ", players[playerNext].playerName);
+                    printf("\n%s has no cards that match ", players[playerNext].playerName);
                     printCard(topCard, true);
-                    printf(" or %c\nOR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    printf(" or %c\nOR penalty, Draw %d\n", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
                         if(drawCard(deck, &players[playerNext]) == 1) {
@@ -201,9 +205,9 @@ int main() {
 
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
                 if(!checkAND(players[playerNext], topCard)) {
-                    printf("%s has no cards that match ", players[playerNext].playerName);
+                    printf("\n%s has no cards that match ", players[playerNext].playerName);
                     printCard(topCard, true);
-                    printf(" and %c\nAND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    printf(" and %c\nAND penalty, Draw %d\n", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
                         if(drawCard(deck, &players[playerNext]) == 1) {
@@ -248,7 +252,7 @@ int main() {
             continueGame = false;
             break;
         }
-        
+
         //Go to the next player
         //If the reverse bool isn't activated:
         if(!repeatPlayer){
@@ -314,6 +318,16 @@ int main() {
         
 
     } //Continue game loop end
+    //Ask the user if they would like to play another round
+    printf("\nNow that the game is over, would you like to play another round?\n");
+    printf("Enter 1 to quit, enter any other number to continue: ");
     
-    return 0;
+    int anotherRound;
+    scanf("%d", &anotherRound);
+    //If the user indicated that they want to quit return, otherwise go back to the top!
+    if(anotherRound == 1) {
+        return 0;
+    }
+
+    } //Infinite loop ender. No code after this! Should continue forever if the user doesn't want to quit.
 }
