@@ -6,7 +6,7 @@ typedef struct card_t {
 } card;
 
 typedef struct player_t {
-    char playerName[20];
+    char playerName[MAX_PLAYER_NAME];
     int decksize;
     card deck[DECK_SIZE]; //Could make this part a linked list or dynamic thing
 } player;

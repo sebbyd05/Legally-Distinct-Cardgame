@@ -2,8 +2,7 @@
 Header file that provides a function that shuffles the cards 10,000 times.
 */
 
-#include"../definitions/gameTypes.h"
-#include"../definitions/gameRules.h"
+#include"createDeck.h"
 #include<stdlib.h>
 #include<time.h>
 
