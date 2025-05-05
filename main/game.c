@@ -137,16 +137,16 @@ int main() {
                 printf("\nThat is not an option!\n");
             }
         }
-        
-        //Check if the player has won, announce and break if they have.
-        if(players[playerTurn].decksize < 1) {
-            printf("\n\n%s has won!!\n", players[playerTurn].playerName);
-            continueGame = false;
-            break;
-        }
+
 
         //Add some clauses to handle the special cards, only checks color first to save compute.
         if(topCard.color == 'S') {
+            //If the card is a special, check if the player won by playing it. This ensures that AND/OR will be able to have another card placed on top
+            if(players[playerTurn].decksize < 1) {
+                printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                continueGame = false;
+                break;
+            }
             //Follow a branch based on which special card is played.
             if(topCard.name == 'O') {
                 while (1 == 1) {
@@ -165,13 +165,6 @@ int main() {
                     } else {
                         printf("\nThat is not a valid selection, please try again!\n");
                     }
-                }
-
-                //Check if the player won by playing that card
-                if(players[playerTurn].decksize < 1) {
-                    printf("\n\n%s has won!!\n", players[playerTurn].playerName);
-                    continueGame = false;
-                    break;
                 }
                 
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
@@ -204,13 +197,6 @@ int main() {
                     } else {
                         printf("\nThat is not a valid selection, please try again!\n");
                     }
-                }
-
-                //Check if the player won by playing that card.
-                if(players[playerTurn].decksize < 1) {
-                    printf("\n\n%s has won!!\n", players[playerTurn].playerName);
-                    continueGame = false;
-                    break;
                 }
 
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
@@ -256,6 +242,13 @@ int main() {
             }
         }
 
+        //Check if the player that is currently up played their last card, announce a win and break if they have.
+        if(players[playerTurn].decksize < 1) {
+            printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+            continueGame = false;
+            break;
+        }
+        
         //Go to the next player
         //If the reverse bool isn't activated:
         if(!repeatPlayer){
