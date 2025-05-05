@@ -7,7 +7,7 @@ A collection of functions that determine how cards and actions work
 
 //Function that checks if the card can be played. Returns true if it can be, returns false if it can't.
 bool checkCardValid(card lastPlayed, card canidate, bool *isAnd) {
-    if(!isAnd){
+    if(!*isAnd){
         //If the game isn't in an AND state follow normal rules
         if(lastPlayed.color == canidate.color) {
             return true;
