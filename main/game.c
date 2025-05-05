@@ -71,6 +71,10 @@ int main() {
     //Create a boolean to tell the game if it should continue.
     bool continueGame = true;
     bool reverse = false;
+    bool outOfCards = false;
+    bool repeatPlayer = false;
+    
+    //While loop to contain the main part of the game
     while(continueGame == true) {
         bool skipNext = false;
         //Print the available cards for the players.
@@ -104,7 +108,7 @@ int main() {
                     //Set the previous top card to be the current top card so we can change it out (for NOT or Reverse)
                     oldTopCard = topCard;
                     //Set the top card to be the card the player just played.
-                    topCard = players->deck[cardChoice];
+                    topCard = players[playerTurn].deck[cardChoice];
                     //Call the function to remove the used card from the player's hand
                     playCard(&players[playerTurn], cardChoice);
                     //Exit the while loop
@@ -124,6 +128,8 @@ int main() {
         //Check if the player has won, announce and break if they have.
         if(players[playerTurn].decksize < 1) {
             printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+            continueGame = false;
+            break;
         }
 
         //Add some clauses to handle the special cards, only checks color first to save compute.
@@ -138,7 +144,7 @@ int main() {
                     //Check if the user's input is valid, perform normal steps if it is.
                     if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
                         //Set the top card to be the card the player just played.
-                        topCard = players->deck[cardChoice];
+                        topCard = players[playerTurn].deck[cardChoice];
                         //Call the function to remove the used card from the player's hand
                         playCard(&players[playerTurn], cardChoice);
                         //Exit the while loop
@@ -151,13 +157,15 @@ int main() {
                 //Check if the player won by playing that card
                 if(players[playerTurn].decksize < 1) {
                     printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                    continueGame = false;
+                    break;
                 }
                 
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
                 if(!checkOR(players[playerNext], topCard)) {
                     printf("%s has no cards that match ", players[playerNext].playerName);
                     printCard(topCard, true);
-                    printf("or %s\n OR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    printf("or %c\n OR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
                         drawCard(deck, &players[playerNext]);
@@ -173,7 +181,7 @@ int main() {
                     //Check if the user's input is valid, perform normal steps if it is.
                     if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
                         //Set the top card to be the card the player just played.
-                        topCard = players->deck[cardChoice];
+                        topCard = players[playerTurn].deck[cardChoice];
                         //Call the function to remove the used card from the player's hand
                         playCard(&players[playerTurn], cardChoice);
                         //Exit the while loop
@@ -186,13 +194,15 @@ int main() {
                 //Check if the player won by playing that card.
                 if(players[playerTurn].decksize < 1) {
                     printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                    continueGame = false;
+                    break;
                 }
 
                 //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
                 if(!checkAND(players[playerNext], topCard)) {
                     printf("%s has no cards that match ", players[playerNext].playerName);
                     printCard(topCard, true);
-                    printf("and %s\n AND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    printf("and %c\n AND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
                         drawCard(deck, &players[playerNext]);
@@ -203,6 +213,8 @@ int main() {
                 //Check if the player won by playing that card before doing anything else
                 if(players[playerTurn].decksize < 1) {
                     printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                    continueGame = false;
+                    break;
                 }
                 //Revert to the previous top card as it just skips player
                 topCard = oldTopCard;
@@ -212,18 +224,62 @@ int main() {
                 //Check if the player won by playing that card. If this isn't done here future checking will be very messed up.
                 if(players[playerTurn].decksize < 1) {
                     printf("\n\n%s has won!!\n", players[playerTurn].playerName);
+                    continueGame = false;
+                    break;
                 }
+
                 //Set the card to whatever was on top before the reverse was played
                 topCard = oldTopCard;
                 //Make the reverse setting whatever it wasn't
                 reverse = !reverse;
-                //Have the handle reverse function trick the next player system so the same player goes again.
-                handleReverse(reverse, &playerTurn);
+                //Set the repeat player flag to true so the player that played the reverse goes again.
+                repeatPlayer = true;
             }
         }
-        
 
-    }
+        //Go to the next player
+        //If the reverse bool isn't activated:
+        if(!repeatPlayer){
+            if(!skipNext) {
+                if(!reverse) {
+                    //Step up the number of players by 1
+                    playerTurn++;
+                    //Modulo the player turn counter by the number of players to loop it back around when it goes over the number of players
+                    playerTurn = playerTurn % numPlayers;
+                    //Set the playerNext variable to whatever player turn is plus 1
+                    playerNext = (playerTurn + 1);
+                    //Modulo that for the same reason.
+                    playerNext = playerNext % numPlayers;
+                } else {
+                    //If it is in reverse, do the same except backwards, ensuring that the result of modulo won't be negative.
+                    playerTurn--;
+                    playerTurn = (playerTurn + numPlayers) % numPlayers;
+                    playerNext = (playerTurn - 1 + numPlayers);
+                    playerNext = playerNext % numPlayers;
+                }
+            } else {
+                //If the skip next clause is active this needs to be done twice as much, and the skip next needs to be set to false
+                if(!reverse) {
+                    playerTurn += 2;
+                    //Modulo that by the player cound to ensure that it loops back around
+                    playerTurn = playerTurn % numPlayers;
+                    //Give the player next the same treatment
+                    playerNext = (playerTurn + 1) % numPlayers;
+                    //Set skip next to false so it doesn't trigger again
+                    skipNext = false;
+                } else {
+                    playerTurn -= 2;
+                    playerTurn = (playerTurn + numPlayers) % numPlayers;
+                    playerNext = (playerTurn - 1 + numPlayers) % numPlayers;
+                    //Set skip next to be false
+                    skipNext = false;
+                }
+            }
+        } else {
+            //Set the repeat player flag to false and do nothing.
+            repeatPlayer = false;
+        }
+    } //Continue game loop end
     
     return 0;
 }

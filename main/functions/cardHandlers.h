@@ -101,9 +101,9 @@ bool checkAND(player targeted, card lastPlayed) {
 //Function that handles the reverse card. Essentially tricks the next player function.
 void handleReverse(bool gameReversed, int *currentPlayer) {
     if(gameReversed) {
-        *currentPlayer += 1;
+        *currentPlayer = *currentPlayer + 1;
     } else {
-        *currentPlayer -= 1;
+        *currentPlayer = *currentPlayer - 1;
     }
     
     return;
