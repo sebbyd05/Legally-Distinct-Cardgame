@@ -38,8 +38,8 @@ void createDeck(card deck[DECK_SIZE]) {
                     deckPos += 2;
                     break;
                 case 3:
-                    deck[deckPos].color = 'G';
-                    deck[(deckPos + 1)].color = 'G';
+                    deck[deckPos].color = 'B';
+                    deck[(deckPos + 1)].color = 'B';
                     deck[deckPos].name = (num + 48);
                     deck[(deckPos + 1)].name = (num + 48);
 
