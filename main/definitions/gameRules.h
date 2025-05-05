@@ -15,3 +15,6 @@
 
 //Number of cards the player should draw at begining
 #define INITAL_DRAW 7
+
+//Number of cards player should draw if they don't meet needs of special
+#define PENALTY_QUANTITY 4

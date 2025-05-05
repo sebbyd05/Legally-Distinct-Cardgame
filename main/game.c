@@ -60,7 +60,9 @@ int main() {
 
     //Create variables that should persist across turns
     int playerTurn = 0;
+    int playerNext = 1;
     card topCard;
+    card oldTopCard;
 
     //Initalize a top card that indicates that any card is valid to be played on top of.
     topCard.name = '\0';
@@ -68,7 +70,9 @@ int main() {
 
     //Create a boolean to tell the game if it should continue.
     bool continueGame = true;
+    bool reverse = false;
     while(continueGame == true) {
+        bool skipNext = false;
         //Print the available cards for the players.
         for(int p = 0; p < numPlayers; p++) {
             //Call the display player hand function
@@ -81,7 +85,7 @@ int main() {
             printf("\nCard pile is empty.\n");
         } else {
             printf("\nTop of card pile is: ");
-            printCard(topCard);
+            printCard(topCard, false);
             printf("\n");
         }
         
@@ -97,6 +101,8 @@ int main() {
                 break;
             } else if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
                 if(checkCardValid(topCard, players[playerTurn].deck[cardChoice])) {
+                    //Set the previous top card to be the current top card so we can change it out (for NOT or Reverse)
+                    oldTopCard = topCard;
                     //Set the top card to be the card the player just played.
                     topCard = players->deck[cardChoice];
                     //Call the function to remove the used card from the player's hand
@@ -105,15 +111,88 @@ int main() {
                     break;
                 } else {
                     printf("\nInvalid choice, cannot place ");
-                    printCard(players[playerTurn].deck[cardChoice]);
+                    printCard(players[playerTurn].deck[cardChoice], false);
                     printf(" on ");
-                    printCard(topCard);
+                    printCard(topCard, false);
                     printf("\n");
                 }
             } else {
                 printf("\nThat is not an option!\n");
             }
         }
+        
+        //Add some clauses to handle the special cards, only checks color first to save compute.
+        if(topCard.color == 'S') {
+            //Follow a branch based on which special card is played.
+            if(topCard.name == 'O') {
+                while (1 == 1) {
+                    int cardChoice = -2;
+                    printPlayerHand(players[playerTurn], true);
+                    printf("\nChoose the card to play with OR from 0 to %d: ", (players[playerTurn].decksize -1));
+                    scanf("%d", &cardChoice);
+                    //Check if the user's input is valid, perform normal steps if it is.
+                    if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
+                        //Set the top card to be the card the player just played.
+                        topCard = players->deck[cardChoice];
+                        //Call the function to remove the used card from the player's hand
+                        playCard(&players[playerTurn], cardChoice);
+                        //Exit the while loop
+                        break;
+                    } else {
+                        printf("\nThat is not a valid selection, please try again!\n");
+                    }
+                }
+                //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
+                if(!checkOR(players[playerNext], topCard)) {
+                    printf("%s has no cards that match ", players[playerNext].playerName);
+                    printCard(topCard, true);
+                    printf("or %s\n OR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    //Make the next player draw that many cards
+                    for(int i = 0; i < PENALTY_QUANTITY; i++) {
+                        drawCard(deck, &players[playerNext]);
+                    }
+                }
+                //Just continue if the player does satisfy the requirements.
+            } else if(topCard.name == 'A') {
+                while (1 == 1) {
+                    int cardChoice = -2;
+                    printPlayerHand(players[playerTurn], true);
+                    printf("\nChoose the card to play with AND from 0 to %d: ", (players[playerTurn].decksize -1));
+                    scanf("%d", &cardChoice);
+                    //Check if the user's input is valid, perform normal steps if it is.
+                    if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
+                        //Set the top card to be the card the player just played.
+                        topCard = players->deck[cardChoice];
+                        //Call the function to remove the used card from the player's hand
+                        playCard(&players[playerTurn], cardChoice);
+                        //Exit the while loop
+                        break;
+                    } else {
+                        printf("\nThat is not a valid selection, please try again!\n");
+                    }
+                }
+                //See if the next user has a card that fits the OR rules, make the next player pick however many they need to if they don't:
+                if(!checkAND(players[playerNext], topCard)) {
+                    printf("%s has no cards that match ", players[playerNext].playerName);
+                    printCard(topCard, true);
+                    printf("and %s\n AND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    //Make the next player draw that many cards
+                    for(int i = 0; i < PENALTY_QUANTITY; i++) {
+                        drawCard(deck, &players[playerNext]);
+                    }
+                }
+                //Just continue if the player does satisfy the requirements.
+            } else if(topCard.name == 'N') {
+                //Revert to the previous top card as it just skips player
+                topCard = oldTopCard;
+                //Tell the system that determines what player goes next to true.
+                skipNext = true;
+            } else if(topCard.name == 'R') {
+                reverse = !reverse;
+                handleReverse(reverse, &playerTurn);
+            }
+        }
+        
         //Now that the cards the player has are printed, determine what user's turn it is and ask them for a move
 
     }

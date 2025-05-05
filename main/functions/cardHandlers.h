@@ -96,34 +96,50 @@ bool checkAND(player targeted, card lastPlayed) {
     return false;
 }
 
-//Function that handles the reverse card
-void handleReverse(bool *gameReversed, int *currentPlayer, int playerCount) {
-    if(playerCount == 2) {
-        *currentPlayer = *currentPlayer - 1;
+//Function that handles the reverse card. Essentially tricks the next player function.
+void handleReverse(bool gameReversed, int *currentPlayer) {
+    if(gameReversed) {
+        *currentPlayer += 1;
     } else {
-        *gameReversed = true;
+        *currentPlayer -= 1;
     }
     
     return;
 }
 
-//Function that prints a card
-void printCard(card c) {
+//Function that prints a card Option 0 prints entire card, option 1 prints card color name.
+void printCard(card c, bool colorOnly) {
     switch(c.color) {
         case 'R':
-            printf("Red %c", c.name);
+            if(!colorOnly) {
+                printf("Red %c", c.name);
+            } else {
+                printf("Red");
+            }
             break;
         
         case 'G':
-            printf("Green %c", c.name);
+            if(!colorOnly) {
+                printf("Green %c", c.name);
+            } else {
+                printf("Green");
+            }
             break;
 
         case 'B':
-            printf("Blue %c", c.name);
+            if(!colorOnly) {
+                printf("Blue %c", c.name);
+            } else {
+                printf("Blue");
+            }
             break;
 
         case 'Y':
-            printf("Yellow %c", c.name);
+            if(!colorOnly) {
+                printf("Yellow %c", c.name);
+            } else {
+                printf("Yellow");
+            }
             break;
 
         case 'S':
