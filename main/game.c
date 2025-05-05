@@ -51,5 +51,12 @@ int main() {
     createDeck(deck);
     shuffleDeck(deck);
 
+    //Now give each player however many cards they are supposed to start with
+    for(int p = 0; p < numPlayers; p++) {
+        for(int c = 0; c < INITAL_DRAW; c++) {
+            drawCard(deck, &players[p]);
+        }
+    }
+
     return 0;
 }

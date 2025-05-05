@@ -12,3 +12,6 @@
 
 //Maximum player name length
 #define MAX_PLAYER_NAME 20
+
+//Number of cards the player should draw at begining
+#define INITAL_DRAW 7

@@ -99,6 +99,9 @@ int initalizePlayer(player *playerToMod) {
         playerToMod->deck[i].name = '\0';
     }
 
+    //Set the player's deck size to zero.
+    playerToMod->decksize = 0;
+
     //If all was successful, return 0
     return 0;
 }

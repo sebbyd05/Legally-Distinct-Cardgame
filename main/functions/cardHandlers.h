@@ -18,7 +18,7 @@ bool checkCardValid(card lastPlayed, card canidate) {
 }
 
 //Function that draws a card to the player's next available card slot. Returns 0 upon success. Returns 1 upon empty deck, returns 2 on player hand reaching max cap.
-int drawCard(card deck[], player p) {
+int drawCard(card deck[], player *p) {
     int nextDeckAvail = -1;
     int nextPlayerAvail = -1;
     //First, check the location of the next available card in the deck
@@ -38,7 +38,7 @@ int drawCard(card deck[], player p) {
 
     //If that passed find the next avalable slot for the player to pick a card from
     for(int i = 0; i < PLAYER_MAX_CARDS; i++) {
-        if(p.deck[i].name == '\0') {
+        if(p->deck[i].name == '\0') {
             nextPlayerAvail = i;
             break;
         }
@@ -50,11 +50,15 @@ int drawCard(card deck[], player p) {
     }
 
     //Now give the player the next available card if function is still running
-    p.deck[nextPlayerAvail].name = deck[nextDeckAvail].name;
-    p.deck[nextPlayerAvail].color = deck[nextDeckAvail].name;
+    p->deck[nextPlayerAvail].name = deck[nextDeckAvail].name;
+    p->deck[nextPlayerAvail].color = deck[nextDeckAvail].color;
 
-    //Set the card that has been taken from the deck's name to \0 to indicate that it has been used
-    deck[nextDeckAvail].name == '\0';
+    //Set the card that has been taken from the deck's info to \0 to indicate that it has been used
+    deck[nextDeckAvail].name = '\0';
+    deck[nextDeckAvail].color = '\0';
+
+    //Increase the number of cards in a player's deck by 1.
+    p->decksize += 1;
 
     //Return 0 to indicate that the function funished running properly
     return 0;
