@@ -106,17 +106,6 @@ bool checkAND(player targeted, card lastPlayed) {
     return false;
 }
 
-//Function that handles the reverse card. Essentially tricks the next player function.
-void handleReverse(bool gameReversed, int *currentPlayer) {
-    if(gameReversed) {
-        *currentPlayer = *currentPlayer + 1;
-    } else {
-        *currentPlayer = *currentPlayer - 1;
-    }
-    
-    return;
-}
-
 //Function that prints a card Option 0 prints entire card, option 1 prints card color name.
 void printCard(card c, bool colorOnly) {
     switch(c.color) {
