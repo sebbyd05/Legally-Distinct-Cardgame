@@ -202,3 +202,20 @@ void printPlayerHand(player p, bool isUp) {
 
     return;
 }
+
+//Function that deletes the card the player just played
+void playCard(player *p, int cardToPlay) {
+    //Set the card the player just played to the last card in the deck
+    p->deck[cardToPlay].color = p->deck[(p->decksize - 1)].color;
+    p->deck[cardToPlay].name = p->deck[(p->decksize - 1)].name;
+
+    //Set the last card in the player's deck to the empty state
+    p->deck[(p->decksize - 1)].color = '\0';
+    p->deck[(p->decksize - 1)].name = '\0';
+
+    //Decrease the player's current deck size by one
+    p->decksize -= 1;
+
+    //Return to the program
+    return;
+}

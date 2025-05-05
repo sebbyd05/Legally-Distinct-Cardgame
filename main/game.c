@@ -85,9 +85,35 @@ int main() {
             printf("\n");
         }
         
-        
-        return 0;
-
+        //Begin a loop for the player to pick a card within
+        while(1 == 1){ 
+            int cardChoice = -2;
+            //Prompt the current player for their choice for next card
+            printf("\n%s, enter which card to play from 0 to %d. Enter -1 to draw a card: ", players[playerTurn].playerName, (players[playerTurn].decksize -1));
+            scanf("%d", &cardChoice);
+            //Check if the card played is valid or not, or see if they want to pick a card.
+            if(cardChoice == -1) {
+                drawCard(deck, &players[playerTurn]);
+                break;
+            } else if(cardChoice >= 0 && cardChoice < players[playerTurn].decksize) {
+                if(checkCardValid(topCard, players[playerTurn].deck[cardChoice])) {
+                    //Set the top card to be the card the player just played.
+                    topCard = players->deck[cardChoice];
+                    //Call the function to remove the used card from the player's hand
+                    playCard(&players[playerTurn], cardChoice);
+                    //Exit the while loop
+                    break;
+                } else {
+                    printf("\nInvalid choice, cannot place ");
+                    printCard(players[playerTurn].deck[cardChoice]);
+                    printf(" on ");
+                    printCard(topCard);
+                    printf("\n");
+                }
+            } else {
+                printf("\nThat is not an option!\n");
+            }
+        }
         //Now that the cards the player has are printed, determine what user's turn it is and ask them for a move
 
     }
