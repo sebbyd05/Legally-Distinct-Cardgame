@@ -70,8 +70,11 @@ int main() {
 
     //Create a boolean to tell the game if it should continue.
     bool continueGame = true;
+    //Boolean to reverse play when it comes time for that.
     bool reverse = false;
+    //Boolean that represents if the main stack is out of cards, enacts an end-of-game scenario if it is.
     bool outOfCards = false;
+    //Boolean that makes whatever player is up go again if it is true.
     bool repeatPlayer = false;
     
     //While loop to contain the main part of the game
@@ -167,7 +170,7 @@ int main() {
                 if(!checkOR(players[playerNext], topCard)) {
                     printf("%s has no cards that match ", players[playerNext].playerName);
                     printCard(topCard, true);
-                    printf("or %c\n OR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    printf(" or %c\nOR penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
                         if(drawCard(deck, &players[playerNext]) == 1) {
@@ -206,7 +209,7 @@ int main() {
                 if(!checkAND(players[playerNext], topCard)) {
                     printf("%s has no cards that match ", players[playerNext].playerName);
                     printCard(topCard, true);
-                    printf("and %c\n AND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
+                    printf(" and %c\nAND penalty, Draw %d", topCard.name, (int)PENALTY_QUANTITY);
                     //Make the next player draw that many cards
                     for(int i = 0; i < PENALTY_QUANTITY; i++) {
                         if(drawCard(deck, &players[playerNext]) == 1) {
