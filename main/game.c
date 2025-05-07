@@ -1,4 +1,4 @@
-#include"functions/shuffleDeck.h" //This includes all nessicary libraries!
+#include"functions/shuffleDeck.h" //This includes all nessicary libraries (they are chained together).
 
 //Main game function
 int main() {

@@ -3,7 +3,7 @@ A collection of functions that determine how cards and actions work
 */
 #include"../definitions/gameTypes.h"
 #include<stdio.h>
-#include<stdbool.h> //Might be able to remove, depending on how I want to do it
+#include<stdbool.h>
 
 //Function that checks if the card can be played. Returns true if it can be, returns false if it can't.
 bool checkCardValid(card lastPlayed, card canidate, bool *isAnd) {
