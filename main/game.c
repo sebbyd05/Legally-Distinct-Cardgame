@@ -1,5 +1,7 @@
 #include"functions/shuffleDeck.h" //This includes all nessicary libraries (they are chained together).
 
+//Test!
+
 //Main game function
 int main() {
     while(1 == 1) { //Start an infite loop to make the game run over and over again. Not following proper formatting so that the entire body of the code doesn't have to be indented.
